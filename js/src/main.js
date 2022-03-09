@@ -9,7 +9,8 @@ function main() {
     new Point(145, 160)
   ]);
 
-  GUI.drawBezierCurve(curve, 100);
+  GUI.drawBezierCurveLines(curve);
+  GUI.drawBezierCurve(curve, 1/100, 1);
 }
 
 window.onload = () => {

@@ -1,20 +1,39 @@
 class GUI {
   /*
-    drawBezierCurve: takes @numSamples values of t uniformly distributed between
-                     0 and 1, calculate the point at each t and join them
-                     together linearly
+    drawBezierCurve: calculates position of a point every @sampleInterval at t
+                     until @maxT, and join them together linearly
     - curve
-    - numSamples
+    - sampleInterval
+    - maxT
   */
-  static drawBezierCurve(curve, numSamples) {
+  static drawBezierCurve(curve, sampleInterval, maxT=1) {
     ctx.save();
 
     ctx.beginPath();
-    let point = curve.sample(0);
-    ctx.moveTo(point.x, point.y);
 
-    for (let i = 1; i < numSamples; i++) {
-      point = curve.sample(i / (numSamples - 1));
+    let t = 0;
+
+    while (t <= maxT) {
+      let point = curve.sample(t);
+      ctx.lineTo(point.x, point.y);
+      t += sampleInterval;
+    }
+
+    ctx.stroke();
+
+    ctx.restore();
+  }
+
+  /*
+    drawBezierCurveLines: draws the lines that define the Bezier curve
+    - curve
+  */
+  static drawBezierCurveLines(curve) {
+    ctx.save();
+
+    ctx.beginPath();
+
+    for (let point of curve.points) {
       ctx.lineTo(point.x, point.y);
     }
 
