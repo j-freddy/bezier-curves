@@ -10,7 +10,7 @@ function main() {
   ]);
 
   GUI.drawBezierCurveLines(curve);
-  GUI.drawBezierCurve(curve, 1/100, 1);
+  GUI.drawBezierCurve(curve, 1/100, maxT=0.5, drawInnerLines=true);
 }
 
 window.onload = () => {

@@ -5,8 +5,10 @@ class GUI {
     - curve
     - sampleInterval
     - maxT
+    - drawInnerLines: if true, draws inner lines used to construct point at
+                      @maxT
   */
-  static drawBezierCurve(curve, sampleInterval, maxT=1) {
+  static drawBezierCurve(curve, sampleInterval, maxT=1, drawInnerLines=false) {
     ctx.save();
 
     ctx.beginPath();
@@ -20,6 +22,20 @@ class GUI {
     }
 
     ctx.stroke();
+
+    if (drawInnerLines) {
+      // Loop through each recursive iteration of point calculation
+      for (let points of curve.innerPoints) {
+        ctx.beginPath();
+
+        // Draw lines
+        for (let point of points) {
+          ctx.lineTo(point.x, point.y);
+        }
+
+        ctx.stroke();
+      }
+    }
 
     ctx.restore();
   }
