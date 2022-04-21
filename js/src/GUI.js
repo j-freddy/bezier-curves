@@ -57,4 +57,30 @@ class GUI {
 
     ctx.restore();
   }
+
+  /*
+    animateBezierCurve: animates Bezier curve drawing from t=@tStart to t=1
+    - curve
+    - drawLines: if true, draws construction lines
+    - tStart: t value of starting point of Bezier curve
+  */
+  static animateBezierCurve(curve, drawLines=false, tStart=0) {
+    if (tStart >= 1 + e) {
+      return;
+    }
+
+    // TODO Do not clear entire canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    if (drawLines) {
+      GUI.drawBezierCurveLines(curve);
+    }
+
+    GUI.drawBezierCurve(curve, 1/100, tStart, drawLines);
+
+    window.requestAnimationFrame(() => {
+      // TODO Make sampling interval a parameter
+      GUI.animateBezierCurve(curve, drawLines, tStart + 0.01)
+    });
+  }
 }

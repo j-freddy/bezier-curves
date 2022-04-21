@@ -1,3 +1,5 @@
+const e = 0.000001; // For floating point errors
+
 const canvas = document.getElementById("main-canvas");
 const ctx = canvas.getContext("2d");
 
@@ -9,8 +11,7 @@ function main() {
     new Point(145, 160)
   ]);
 
-  GUI.drawBezierCurveLines(curve);
-  GUI.drawBezierCurve(curve, 1/100, maxT=0.5, drawInnerLines=true);
+  GUI.animateBezierCurve(curve, drawLines=true);
 }
 
 window.onload = () => {
