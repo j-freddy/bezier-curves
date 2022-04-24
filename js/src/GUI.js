@@ -1,4 +1,36 @@
 class GUI {
+  static drawLerp(pointOne, pointTwo, t=1, colourRed=false) {
+    const pointEnd = pointOne.lerpWithPoint(pointTwo, t);
+
+    ctx.save();
+
+    if (colourRed) {
+      ctx.strokeStyle = "#ff0000";
+    }
+
+    ctx.beginPath();
+    ctx.lineTo(pointOne.x, pointOne.y);
+    ctx.lineTo(pointEnd.x, pointEnd.y);
+    ctx.stroke();
+
+    ctx.restore();
+  }
+
+  static animateLerp(pointOne, pointTwo, deltaTime=0.01, t=0) {
+    if (t >= 1 + e) {
+      return;
+    }
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    GUI.drawLerp(pointOne, pointTwo, 1);
+    GUI.drawLerp(pointOne, pointTwo, t, true);
+
+    window.requestAnimationFrame(() => {
+      GUI.animateLerp(pointOne, pointTwo, deltaTime, t + deltaTime)
+    });
+  }
+
   /*
     drawBezierCurve: calculates position of a point every @sampleInterval at t
                      until @maxT, and join them together linearly
@@ -64,23 +96,21 @@ class GUI {
     - drawLines: if true, draws construction lines
     - tStart: t value of starting point of Bezier curve
   */
-  static animateBezierCurve(curve, drawLines=false, tStart=0) {
-    if (tStart >= 1 + e) {
+  static animateBezierCurve(curve, drawLines=false, deltaTime=0.01, t=0) {
+    if (t >= 1 + e) {
       return;
     }
 
-    // TODO Do not clear entire canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     if (drawLines) {
       GUI.drawBezierCurveLines(curve);
     }
 
-    GUI.drawBezierCurve(curve, 1/100, tStart, drawLines);
+    GUI.drawBezierCurve(curve, deltaTime, t, drawLines);
 
     window.requestAnimationFrame(() => {
-      // TODO Make sampling interval a parameter
-      GUI.animateBezierCurve(curve, drawLines, tStart + 0.01)
+      GUI.animateBezierCurve(curve, drawLines, deltaTime, t + deltaTime)
     });
   }
 }
