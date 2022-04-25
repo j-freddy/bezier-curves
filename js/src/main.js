@@ -7,6 +7,14 @@ function animateLerp() {
   GUI.animateLerp(new Point(50, 50), new Point(150, 150));
 }
 
+function animateDoubleLerp() {
+  GUI.animateDoubleLerp(
+    new Point(50, 50),
+    new Point(150, 150),
+    new Point(250, 250)
+  );
+}
+
 function animateBezier() {
   const curve = new BezierCurve([
     new Point(20, 180),
@@ -19,7 +27,7 @@ function animateBezier() {
 }
 
 function main() {
-  animateBezier();
+  animateDoubleLerp();
 }
 
 window.onload = () => {

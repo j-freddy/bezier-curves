@@ -62,6 +62,15 @@ class GUI {
     return pointEnd;
   }
 
+  static drawPrettyLerp(pointOne, pointTwo, t=1) {
+    GUI.drawLerp(pointOne, pointTwo);              // Draw base line
+    const pointEnd
+      = GUI.drawLerp(pointOne, pointTwo, t, true); // Draw lerp overlay
+    GUI.drawPoint(pointOne);                       // Draw points
+    GUI.drawPoint(pointTwo);
+    GUI.drawPoint(pointEnd);
+  }
+
   /*
     animateLerp: animates lerp drawing from t=@t to t=1
     - pointOne: start of lerp
@@ -76,15 +85,27 @@ class GUI {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    GUI.drawLerp(pointOne, pointTwo);              // Draw base line
-    const pointEnd
-      = GUI.drawLerp(pointOne, pointTwo, t, true); // Draw lerp overlay
-    GUI.drawPoint(pointOne);                       // Draw points
-    GUI.drawPoint(pointTwo);
-    GUI.drawPoint(pointEnd);
+    GUI.drawPrettyLerp(pointOne, pointTwo, t);
 
     window.requestAnimationFrame(() => {
-      GUI.animateLerp(pointOne, pointTwo, deltaTime, t + deltaTime)
+      GUI.animateLerp(pointOne, pointTwo, deltaTime, t + deltaTime);
+    });
+  }
+
+  static animateDoubleLerp(pointOne, pointTwo, pointThree,
+                           deltaTime=gui.deltaTime, t=0) {
+    if (t >= 1 + e) {
+      return;
+    }
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    GUI.drawPrettyLerp(pointOne, pointTwo, t);
+    GUI.drawPrettyLerp(pointTwo, pointThree, t);
+
+    window.requestAnimationFrame(() => {
+      GUI.animateDoubleLerp(pointOne, pointTwo, pointThree, deltaTime,
+                            t + deltaTime);
     });
   }
 
@@ -194,7 +215,7 @@ class GUI {
     GUI.drawBezierCurve(curve, deltaTime, t, drawLines);
 
     window.requestAnimationFrame(() => {
-      GUI.animateBezierCurve(curve, drawLines, deltaTime, t + deltaTime)
+      GUI.animateBezierCurve(curve, drawLines, deltaTime, t + deltaTime);
     });
   }
 }
