@@ -3,9 +3,9 @@ const gui = {
   thickLineWidth: 3,
   circleRadius: 3,
 
-  colourPrimary: "#000",
-  colourSecondary: "#ff0000",
-  colourTertiary: "#00ff00",
+  colourPrimary: "#343a40",
+  colourSecondary: "#fd7e14",
+  colourTertiary: "#20c997",
   
   deltaTime: 0.005
 }
