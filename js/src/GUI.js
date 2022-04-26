@@ -1,23 +1,42 @@
-const gui = {
+const data = {
   lineWidth: 2,
   thickLineWidth: 3,
   circleRadius: 3,
-
+  
   colourPrimary: "#343a40",
   colourSecondary: "#fd7e14",
   colourTertiary: "#20c997",
   
-  deltaTime: 0.005
+  deltaTime: 0.02,
+  fps: 24
 }
 
+class MyGif {
+  static snapshotCanvas() {
+    // Save canvas pixels to gif
+    // gif.addFrame(ctx, {copy: true}); // Doesn't work
+    let snapshot = new Image();
+    snapshot.src = canvas.toDataURL();
+    myGif.addFrame(snapshot, {delay: 1/data.fps});
+  }
+
+  static showGif() {
+    myGif.on("finished", blob => {
+      window.open(URL.createObjectURL(blob));
+    });
+
+    myGif.render();
+  }
+}
+  
 class GUI {
   static drawPoint(point) {
     ctx.save();
 
-    ctx.fillStyle = gui.colourPrimary;
+    ctx.fillStyle = data.colourPrimary;
 
     ctx.beginPath();
-    ctx.arc(point.x, point.y, gui.circleRadius, 0, 2*Math.PI);
+    ctx.arc(point.x, point.y, data.circleRadius, 0, 2*Math.PI);
     ctx.fill();
 
     ctx.restore();
@@ -44,12 +63,12 @@ class GUI {
     ctx.save();
 
     if (overlay) {
-      ctx.lineWidth = gui.thickLineWidth;
-      ctx.strokeStyle = gui.colourSecondary;
+      ctx.lineWidth = data.thickLineWidth;
+      ctx.strokeStyle = data.colourSecondary;
 
     } else {
-      ctx.lineWidth = gui.lineWidth;
-      ctx.strokeStyle = gui.colourPrimary;
+      ctx.lineWidth = data.lineWidth;
+      ctx.strokeStyle = data.colourPrimary;
     }
 
     ctx.beginPath();
@@ -78,14 +97,19 @@ class GUI {
     - deltaTime: specifies change in @t per iteration
     - t: t value of starting point of lerp
   */
-  static animateLerp(pointOne, pointTwo, deltaTime=gui.deltaTime, t=0) {
+  static animateLerp(pointOne, pointTwo, deltaTime=data.deltaTime, t=0) {
     if (t >= 1 + e) {
+      MyGif.showGif();
       return;
     }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#fff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     
     GUI.drawPrettyLerp(pointOne, pointTwo, t);
+
+    MyGif.snapshotCanvas();
 
     window.requestAnimationFrame(() => {
       GUI.animateLerp(pointOne, pointTwo, deltaTime, t + deltaTime);
@@ -93,15 +117,20 @@ class GUI {
   }
 
   static animateDoubleLerp(pointOne, pointTwo, pointThree,
-                           deltaTime=gui.deltaTime, t=0) {
+                           deltaTime=data.deltaTime, t=0) {
     if (t >= 1 + e) {
+      MyGif.showGif();
       return;
     }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#fff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     
     GUI.drawPrettyLerp(pointOne, pointTwo, t);
     GUI.drawPrettyLerp(pointTwo, pointThree, t);
+
+    MyGif.snapshotCanvas();
 
     window.requestAnimationFrame(() => {
       GUI.animateDoubleLerp(pointOne, pointTwo, pointThree, deltaTime,
@@ -121,8 +150,8 @@ class GUI {
   static drawBezierCurve(curve, sampleInterval, maxT=1, drawInnerLines=false) {
     ctx.save();
 
-    ctx.lineWidth = gui.thickLineWidth;
-    ctx.strokeStyle = gui.colourSecondary;
+    ctx.lineWidth = data.thickLineWidth;
+    ctx.strokeStyle = data.colourSecondary;
 
     if (drawInnerLines) {
       // Draw construction lines
@@ -147,8 +176,8 @@ class GUI {
     function drawInnerLines() {
       ctx.save();
 
-      ctx.lineWidth = gui.lineWidth;
-      ctx.strokeStyle = gui.colourTertiary;
+      ctx.lineWidth = data.lineWidth;
+      ctx.strokeStyle = data.colourTertiary;
 
       // Loop through each recursive iteration of point calculation
       for (let points of curve.innerPoints) {
@@ -176,8 +205,8 @@ class GUI {
   static drawBezierCurveLines(curve) {
     ctx.save();
 
-    ctx.lineWidth = gui.lineWidth;
-    ctx.strokeStyle = gui.colourPrimary;
+    ctx.lineWidth = data.lineWidth;
+    ctx.strokeStyle = data.colourPrimary;
 
     ctx.beginPath();
 
@@ -200,19 +229,24 @@ class GUI {
     - deltaTime: specifies change in @t per iteration
     - t: t value of starting point of Bezier curve
   */
-  static animateBezierCurve(curve, drawLines=false, deltaTime=gui.deltaTime,
+  static animateBezierCurve(curve, drawLines=false, deltaTime=data.deltaTime,
                             t=0) {
     if (t >= 1 + e) {
+      MyGif.showGif();
       return;
     }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#fff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     if (drawLines) {
       GUI.drawBezierCurveLines(curve);
     }
 
     GUI.drawBezierCurve(curve, deltaTime, t, drawLines);
+
+    MyGif.snapshotCanvas();
 
     window.requestAnimationFrame(() => {
       GUI.animateBezierCurve(curve, drawLines, deltaTime, t + deltaTime);

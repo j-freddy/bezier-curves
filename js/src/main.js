@@ -3,6 +3,26 @@ const e = 0.000001; // For floating point errors
 const canvas = document.getElementById("main-canvas");
 const ctx = canvas.getContext("2d");
 
+// Make a GIF
+const myGif = new GIF({
+  workers: 2,
+  quality: 4,
+  background: "#fff",
+  repeat: 0
+});
+
+function main() {
+  // animateLerp();
+  // animateDoubleLerp();
+  // animateQuadraticBezier();
+  // animateBezier();
+  animateBezierLoop();
+}
+
+window.onload = () => {
+  main();
+}
+
 function animateLerp() {
   GUI.animateLerp(
     new Point(70, 40),
@@ -16,6 +36,16 @@ function animateDoubleLerp() {
     new Point(155, 40),
     new Point(260, 200)
   );
+}
+
+function animateQuadraticBezier() {
+  const curve = new BezierCurve([
+    new Point(40, 200),
+    new Point(155, 40),
+    new Point(260, 200)
+  ]);
+
+  GUI.animateBezierCurve(curve, drawLines=true);
 }
 
 function animateBezier() {
@@ -38,12 +68,4 @@ function animateBezierLoop() {
   ]);
 
   GUI.animateBezierCurve(curve, drawLines=true);
-}
-
-function main() {
-  animateBezierLoop();
-}
-
-window.onload = () => {
-  main();
 }
