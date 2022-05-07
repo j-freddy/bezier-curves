@@ -11,6 +11,10 @@ const gui = {
 }
 
 class GUI {
+  static clear() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
   static drawPoint(point) {
     ctx.save();
 
@@ -83,7 +87,7 @@ class GUI {
       return;
     }
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    GUI.clear();
     
     GUI.drawPrettyLerp(pointOne, pointTwo, t);
 
@@ -98,7 +102,7 @@ class GUI {
       return;
     }
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    GUI.clear();
     
     GUI.drawPrettyLerp(pointOne, pointTwo, t);
     GUI.drawPrettyLerp(pointTwo, pointThree, t);
@@ -126,7 +130,7 @@ class GUI {
 
     if (drawInnerLines) {
       // Draw construction lines
-      drawInnerLines();
+      drawConstructionLines();
     }
 
     ctx.beginPath();
@@ -144,7 +148,7 @@ class GUI {
 
     ctx.restore();
 
-    function drawInnerLines() {
+    function drawConstructionLines() {
       ctx.save();
 
       ctx.lineWidth = gui.lineWidth;
@@ -206,7 +210,7 @@ class GUI {
       return;
     }
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    GUI.clear();
 
     if (drawLines) {
       GUI.drawBezierCurveLines(curve);
