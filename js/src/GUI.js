@@ -1,16 +1,14 @@
-const gui = {
-  lineWidth: 2,
-  thickLineWidth: 3,
-  circleRadius: 3,
-
-  colourPrimary: "#343a40",
-  colourSecondary: "#fd7e14",
-  colourTertiary: "#20c997",
-  
-  deltaTime: 0.005
-}
-
 class GUI {
+  static lineWidth = 2;
+  static thickLineWidth = 3;
+  static circleRadius = 3;
+
+  static colourPrimary = "#343a40";
+  static colourSecondary = "#fd7e14";
+  static colourTertiary = "#20c997";
+  
+  static deltaTime = 0.005;
+
   static clear() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
@@ -18,10 +16,10 @@ class GUI {
   static drawPoint(point) {
     ctx.save();
 
-    ctx.fillStyle = gui.colourPrimary;
+    ctx.fillStyle = GUI.colourPrimary;
 
     ctx.beginPath();
-    ctx.arc(point.x, point.y, gui.circleRadius, 0, 2*Math.PI);
+    ctx.arc(point.x, point.y, GUI.circleRadius, 0, 2*Math.PI);
     ctx.fill();
 
     ctx.restore();
@@ -48,12 +46,12 @@ class GUI {
     ctx.save();
 
     if (overlay) {
-      ctx.lineWidth = gui.thickLineWidth;
-      ctx.strokeStyle = gui.colourSecondary;
+      ctx.lineWidth = GUI.thickLineWidth;
+      ctx.strokeStyle = GUI.colourSecondary;
 
     } else {
-      ctx.lineWidth = gui.lineWidth;
-      ctx.strokeStyle = gui.colourPrimary;
+      ctx.lineWidth = GUI.lineWidth;
+      ctx.strokeStyle = GUI.colourPrimary;
     }
 
     ctx.beginPath();
@@ -82,7 +80,7 @@ class GUI {
     - deltaTime: specifies change in @t per iteration
     - t: t value of starting point of lerp
   */
-  static animateLerp(pointOne, pointTwo, deltaTime=gui.deltaTime, t=0) {
+  static animateLerp(pointOne, pointTwo, deltaTime=GUI.deltaTime, t=0) {
     if (t >= 1 + e) {
       return;
     }
@@ -97,7 +95,7 @@ class GUI {
   }
 
   static animateDoubleLerp(pointOne, pointTwo, pointThree,
-                           deltaTime=gui.deltaTime, t=0) {
+                           deltaTime=GUI.deltaTime, t=0) {
     if (t >= 1 + e) {
       return;
     }
@@ -125,8 +123,8 @@ class GUI {
   static drawBezierCurve(curve, sampleInterval, maxT=1, drawInnerLines=false) {
     ctx.save();
 
-    ctx.lineWidth = gui.thickLineWidth;
-    ctx.strokeStyle = gui.colourSecondary;
+    ctx.lineWidth = GUI.thickLineWidth;
+    ctx.strokeStyle = GUI.colourSecondary;
 
     if (drawInnerLines) {
       // Draw construction lines
@@ -151,8 +149,8 @@ class GUI {
     function drawConstructionLines() {
       ctx.save();
 
-      ctx.lineWidth = gui.lineWidth;
-      ctx.strokeStyle = gui.colourTertiary;
+      ctx.lineWidth = GUI.lineWidth;
+      ctx.strokeStyle = GUI.colourTertiary;
 
       // Loop through each recursive iteration of point calculation
       for (let points of curve.innerPoints) {
@@ -180,8 +178,8 @@ class GUI {
   static drawBezierCurveLines(curve) {
     ctx.save();
 
-    ctx.lineWidth = gui.lineWidth;
-    ctx.strokeStyle = gui.colourPrimary;
+    ctx.lineWidth = GUI.lineWidth;
+    ctx.strokeStyle = GUI.colourPrimary;
 
     ctx.beginPath();
 
@@ -204,7 +202,7 @@ class GUI {
     - deltaTime: specifies change in @t per iteration
     - t: t value of starting point of Bezier curve
   */
-  static animateBezierCurve(curve, drawLines=false, deltaTime=gui.deltaTime,
+  static animateBezierCurve(curve, drawLines=false, deltaTime=GUI.deltaTime,
                             t=0) {
     if (t >= 1 + e) {
       return;

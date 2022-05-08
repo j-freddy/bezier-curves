@@ -1,5 +1,5 @@
-const e = 0.000001; // For floating point errors
 const SAMPLE_INTERVAL = 0.01;
+const CURSOR_NODE_BALL = 28;
 
 const canvas = document.getElementById("main-canvas");
 const ctx = canvas.getContext("2d");
@@ -29,12 +29,11 @@ draggedPoints = [];
 
 canvas.addEventListener("mousedown", e => {
   for (point of curve.points) {
-    // TODO refactor
     // Select 1st point close to cursor
     let distFromCursor
       = Math.sqrt((point.x - e.offsetX)**2 + (point.y - e.offsetY)**2);
 
-    if (distFromCursor < 28) {
+    if (distFromCursor < CURSOR_NODE_BALL) {
       draggedPoints.push(point);
       break;
     }
@@ -44,14 +43,7 @@ canvas.addEventListener("mousedown", e => {
     return;
   }
 
-  // TODO duplicate code
-  for (point of draggedPoints) {
-    point.x = e.offsetX;
-    point.y = e.offsetY;
-  }
-
-  // Update GUI
-  updateCanvas();
+  moveDraggedPointsToMouse(e.offsetX, e.offsetY);
 });
 
 canvas.addEventListener("mouseup", () => {
@@ -59,11 +51,15 @@ canvas.addEventListener("mouseup", () => {
 });
 
 canvas.addEventListener("mousemove", e => {
+  moveDraggedPointsToMouse(e.offsetX, e.offsetY);
+});
+
+function moveDraggedPointsToMouse(mouseX, mouseY) {
   for (point of draggedPoints) {
-    point.x = e.offsetX;
-    point.y = e.offsetY;
+    point.x = mouseX;
+    point.y = mouseY;
   }
 
   // Update GUI
   updateCanvas();
-});
+}
